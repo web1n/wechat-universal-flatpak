@@ -18,6 +18,7 @@ jobs:
           sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
           sudo flatpak install -y org.freedesktop.Platform//23.08
           sudo flatpak install -y org.freedesktop.Sdk//23.08
+          git config --global protocol.file.allow always # https://github.com/flatpak/flatpak-builder/issues/495
       - name: Build
         run:
           |
