@@ -86,8 +86,8 @@ modules:
     buildsystem: simple
     build-commands:
       - make -f Makefile-libbz2_so
-      - install -D libbz2.so.1.0.8 /app/lib/libbz2.so.1.0.8
-      - ln -s /app/lib/libbz2.so.1.0.8 /app/lib/libbz2.so.1.0
+      - install -D libbz2.so.1.0.8 $FLATPAK_DEST/lib/libbz2.so.1.0.8
+      - ln -s /app/lib/libbz2.so.1.0.8 $FLATPAK_DEST/lib/libbz2.so.1.0
     sources:
       - type: archive
         url: https://github.com/opencor/bzip2/archive/refs/tags/bzip2-1.0.8.tar.gz
@@ -107,8 +107,7 @@ modules:
       - install -Dm644 license/etc/lsb-release -t $FLATPAK_DEST/license/etc
       - install -Dm644 license/var/lib/uos-license/.license.json -t $FLATPAK_DEST/license/var/lib/uos-license
       - install -Dm644 license/var/uos/.license.key -t $FLATPAK_DEST/license/var/uos
-      - install -dm755 $FLATPAK_DEST/usr/lib/license
-      - install -Dm755 libuosdevicea.so -t $FLATPAK_DEST/license/usr/lib/license
+      - install -Dm644 libuosdevicea.so -t $FLATPAK_DEST/license/usr/lib/license
  
     sources:
       - type: script
