@@ -1,0 +1,152 @@
+id: com.tencent.WeChat
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+command: wechat
+separate-locales: false
+
+finish-args:
+  - --share=ipc
+  - --share=network
+  - --socket=x11
+  - --socket=pulseaudio
+  - --device=all
+  # Required by proot
+  - --allow=devel
+  # System tray icon
+  - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.kde.StatusNotifierWatcher
+  - --talk-name=org.freedesktop.Flatpak
+  # Required by libuosdevicea
+  - --talk-name=org.freedesktop.DBus
+  - --talk-name=org.freedesktop.DBus.Proprieties
+  - --system-talk-name=org.freedesktop.DBus
+  - --system-talk-name=org.freedesktop.DBus.Proprieties
+  # Screenshot
+  # - --talk-name=org.gnome.Shell.Screenshot
+  # - --talk-name=org.kde.kwin.Screenshot
+  # Files
+  - --filesystem=xdg-download
+  - --filesystem=xdg-music
+  - --filesystem=xdg-pictures
+  - --persist=.xwechat
+  - --persist=xwechat_files
+  # IME
+  # - --env=QT_IM_MODULE=
+  # Hidpi scale
+  - --env=QT_AUTO_SCREEN_SCALE_FACTOR=1
+
+cleanup:
+  - "/include"
+  - "/lib/pkgconfig"
+  - "/man"
+  - "/share/doc"
+  - "/share/gtk-doc"
+  - "/share/man"
+  - "/share/pkgconfig"
+  - "*.la"
+  - "*.a"
+
+modules:
+  # required by proot
+  - name: libtalloc
+    buildsystem: autotools
+    sources:
+      - type: archive
+        url: https://www.samba.org/ftp/talloc/talloc-2.4.1.tar.gz
+        sha256: 410a547f08557007be0e88194f218868358edc0ab98c98ba8c167930db3d33f9
+
+  - name: proot
+    buildsystem: simple
+    build-commands:
+      - make -C src proot
+      - install -Dm755 src/proot -t /app/bin
+    sources:
+      - type: git
+        url: https://github.com/proot-me/proot.git
+        commit: bd5a5f63d72f8210d8cee76195eb9f0749e5bd70
+
+  # required by libuosdevicea
+  - name: openssl
+    buildsystem: simple
+    build-commands:
+      - ./config --prefix=/app
+      - make
+      - make install
+    sources:
+      - type: archive
+        url: https://www.openssl.org/source/openssl-1.1.1w.tar.gz
+        sha256: cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8
+    cleanup:
+      - /share/doc
+      - /share/man
+
+  # required by wechat-beta
+  - name: bzip2
+    buildsystem: simple
+    build-commands:
+      - make -f Makefile-libbz2_so
+      - install -D libbz2.so.1.0.8 /app/lib/libbz2.so.1.0.8
+      - ln -s /app/lib/libbz2.so.1.0.8 /app/lib/libbz2.so.1.0
+    sources:
+      - type: archive
+        url: https://github.com/opencor/bzip2/archive/refs/tags/bzip2-1.0.8.tar.gz
+        sha256: db106b740252669664fd8f3a1c69fe7f689d5cd4b132f82ba82b9afba27627df
+
+  - name: wechat
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 com.tencent.WeChat.metainfo.xml -t $FLATPAK_DEST/share/metainfo
+      - install -Dm644 com.tencent.WeChat.png -t $FLATPAK_DEST/share/icons/hicolor/512x512/apps
+      - install -Dm644 com.tencent.WeChat.desktop -t $FLATPAK_DEST/share/applications
+      - install -D wechat.sh $FLATPAK_DEST/bin/wechat
+      - install -D apply_extra -t ${FLATPAK_DEST}/bin
+      # license
+      - bsdtar -xzf license.tar.gz
+      - install -Dm644 license/etc/os-release -t $FLATPAK_DEST/license/etc
+      - install -Dm644 license/etc/lsb-release -t $FLATPAK_DEST/license/etc
+      - install -Dm644 license/var/lib/uos-license/.license.json -t $FLATPAK_DEST/license/var/lib/uos-license
+      - install -Dm644 license/var/uos/.license.key -t $FLATPAK_DEST/license/var/uos
+      - install -dm755 $FLATPAK_DEST/usr/lib/license
+      - install -Dm755 libuosdevicea.so -t $FLATPAK_DEST/license/usr/lib/license
+ 
+    sources:
+      - type: script
+        dest-filename: apply_extra
+        commands:
+          - bsdtar --to-stdout -xf wechat-beta.deb data.* | bsdtar -xf -
+          - mv opt/wechat-beta .
+          - rm -rf wechat-beta.deb usr opt data.*
+
+      - type: script
+        dest-filename: wechat.sh
+        commands:
+          - |
+            exec proot -b /app/license/usr/lib/license/libuosdevicea.so:/usr/lib/license/libuosdevicea.so \
+              -b /app/license/etc/os-release:/etc/os-release \
+              -b /app/license/etc/lsb-release:/etc/lsb-release \
+              -b /app/license/var/lib/uos-license/.license.json:/var/lib/uos-license/.license.json \
+              -b /app/license/var/uos/.license.key:/var/uos/.license.key \
+              /app/extra/wechat-beta/wechat "$@"
+
+      - type: file
+        path: com.tencent.WeChat.metainfo.xml
+
+      - type: file
+        path: com.tencent.WeChat.png
+
+      - type: file
+        path: com.tencent.WeChat.desktop
+
+      - type: file
+        path: license.tar.gz
+
+      - type: file
+        path: libuosdevicea.so
+
+      - type: extra-data
+        filename: wechat-beta.deb
+        only-arches: [x86_64]
+        url: https://cdn4.cnxclm.com/uploads/2024/03/05/3VDyAc0x_wechat-beta_1.0.0.145_amd64.deb?attname=wechat-beta_1.0.0.145_amd64.deb
+        sha256: fbb1ada447c2595a4ce568eb79852555a724158836c213c7c2ec366164976ebe
+        size: 110242404
