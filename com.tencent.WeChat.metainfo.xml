@@ -2,28 +2,17 @@
 <component type="desktop-application">
   <id>com.tencent.WeChat</id>
   <name>WeChat</name>
-  <project_license>LicenseRef-proprietary=https://rule.tencent.com/rule/preview/46a15f24-e42c-4cb6-a308-2347139b1201</project_license>
+  <project_license>LicenseRef-proprietary</project_license>
   <developer_name>Tencent</developer_name>
   <summary>Online instant messaging service</summary>
   <metadata_license>CC0-1.0</metadata_license>
   <launchable type="desktop-id">com.tencent.WeChat.desktop</launchable>
-  <url type="homepage">https://im.qq.com</url>
-  <url type="help">https://kf.qq.com/product/QQ.html</url>
+  <url type="homepage">https://weixin.qq.com</url>
+  <url type="help">https://kf.qq.com/product/weixin.html</url>
   <description>
     <p>WeChat.</p>
     <p>NOTE: This wrapper is not verified by, affiliated with, or supported by Tencent.</p>
   </description>
-  <screenshots>
-    <screenshot type="default">
-      <image>https://user-images.githubusercontent.com/672668/278006499-596dd817-d90e-4777-a263-8b0dd6d70b60.png</image>
-    </screenshot>
-    <screenshot>
-      <image>https://user-images.githubusercontent.com/672668/278006559-342c7d12-4c6f-4edc-81ab-230cd2848025.png</image>
-    </screenshot>
-    <screenshot>
-      <image>https://user-images.githubusercontent.com/672668/278006549-c3da6fbe-82d6-46a9-a338-3f2233554c5c.png</image>
-    </screenshot>
-  </screenshots>
   <categories>
     <category>InstantMessaging</category>
     <category>Network</category>
