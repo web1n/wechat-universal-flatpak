@@ -16,7 +16,7 @@ finish-args:
   # System tray icon
   - --talk-name=org.freedesktop.Notifications
   - --talk-name=org.kde.StatusNotifierWatcher
-  - --talk-name=org.freedesktop.Flatpak
+  - --own-name=org.kde.*
   # Required by libuosdevicea
   - --talk-name=org.freedesktop.DBus
   - --talk-name=org.freedesktop.DBus.Proprieties
