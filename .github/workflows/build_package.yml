@@ -1,0 +1,44 @@
+name: Build Flatpak Bundle
+on:
+  workflow_dispatch:
+
+jobs:
+  build-bundle:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Flatpak
+        run:
+          |
+          sudo apt update
+          sudo apt upgrade -y
+          sudo apt install -y flatpak flatpak-builder
+          sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          sudo flatpak install -y org.freedesktop.Platform//23.08
+          sudo flatpak install -y org.freedesktop.Sdk//23.08
+          git config --global protocol.file.allow always # https://github.com/flatpak/flatpak-builder/issues/495
+      - name: Build
+        run:
+          |
+          flatpak-builder build com.tencent.WeChat.yaml --delete-build-dirs --force-clean 
+          flatpak-builder --repo=repo build com.tencent.WeChat.yaml --force-clean
+          flatpak build-bundle ./repo com.tencent.WeChat.flatpak com.tencent.WeChat
+      - name: Get current date
+        id: date
+        run: echo "CURRENT_DATE=$(date -u '+%y%m%d%H%M')" >> $GITHUB_OUTPUT
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ steps.date.outputs.CURRENT_DATE }}
+          tag_name: ${{ steps.date.outputs.CURRENT_DATE }}
+          files: com.tencent.WeChat.flatpak
+          body:
+            |
+            install via:
+            ```
+            flatpak install com.tencent.WeChat.flatpak
+            ```
