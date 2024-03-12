@@ -124,6 +124,7 @@ modules:
       - install -Dm644 com.tencent.WeChat.png -t $FLATPAK_DEST/share/icons/hicolor/512x512/apps
       - install -Dm644 com.tencent.WeChat.desktop -t $FLATPAK_DEST/share/applications
       - install -D wechat.sh $FLATPAK_DEST/bin/wechat
+      - install -D dde-file-manager.sh $FLATPAK_DEST/bin/dde-file-manager
       # license
       - bsdtar -xzf license.tar.gz
       - install -Dm644 license/etc/os-release -t $FLATPAK_DEST/license/etc
@@ -143,6 +144,20 @@ modules:
               -b /app/license/var/lib/uos-license/.license.json:/var/lib/uos-license/.license.json \
               -b /app/license/var/uos/.license.key:/var/uos/.license.key \
               /app/wechat-beta/wechat "$@"
+
+      - type: script
+        dest-filename: dde-file-manager.sh
+        commands:
+          - |
+            if [ "$1" == "--show-item" ]; then
+              real_path=$(realpath -m "$2" | xargs dirname | sed "s:^$HOME/xwechat_files/:$HOME/.var/app/$FLATPAK_ID/xwechat_files/:")
+              echo "real path is $real_path"
+              if [ -d "$real_path" ]; then
+                exec xdg-open "$real_path"
+              else
+                zenity --error --text="Path $real_path not found" --icon-name=com.tencent.WeChat
+              fi
+            fi
 
       - type: file
         path: com.tencent.WeChat.metainfo.xml
