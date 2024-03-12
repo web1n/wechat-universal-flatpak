@@ -29,8 +29,6 @@ finish-args:
   - --filesystem=xdg-download
   - --filesystem=xdg-music
   - --filesystem=xdg-pictures
-  - --persist=.xwechat
-  - --persist=xwechat_files
   # IME
   # - --env=QT_IM_MODULE=
   # Hidpi scale
@@ -137,11 +135,20 @@ modules:
         dest-filename: wechat.sh
         commands:
           - |
+            if [ ! -d "${XDG_DATA_HOME}/.xwechat" ]; then
+              mkdir "${XDG_DATA_HOME}/.xwechat"
+            fi
+            if [ ! -d "${XDG_DATA_HOME}/xwechat_files" ]; then
+              mkdir "${XDG_DATA_HOME}/xwechat_files"
+            fi
+
             exec proot -b /app/license/usr/lib/license/libuosdevicea.so:/usr/lib/license/libuosdevicea.so \
               -b /app/license/etc/os-release:/etc/os-release \
               -b /app/license/etc/lsb-release:/etc/lsb-release \
               -b /app/license/var/lib/uos-license/.license.json:/var/lib/uos-license/.license.json \
               -b /app/license/var/uos/.license.key:/var/uos/.license.key \
+              -b "${XDG_DATA_HOME}/.xwechat":"${HOME}/.xwechat" \
+              -b "${XDG_DATA_HOME}/xwechat_files":"${HOME}/xwechat_files" \
               /app/wechat-beta/wechat "$@"
 
       - type: file
