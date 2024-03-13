@@ -99,22 +99,21 @@ modules:
     buildsystem: simple
     build-commands:
       - bsdtar --to-stdout -xf wechat-beta.deb data.* | bsdtar -xf -
-      - mv opt/wechat-beta/* .
+      - mv opt/apps/com.tencent.wechat/files/* .
       - install -D wechat -t $FLATPAK_DEST/wechat-beta
       - install -D crashpad_handler -t $FLATPAK_DEST/wechat-beta
       - install -Dm644 lib* -t $FLATPAK_DEST/wechat-beta
       - install -Dm644 RadiumWMPF/host/* -t $FLATPAK_DEST/wechat-beta/RadiumWMPF/host
       - install -Dm644 RadiumWMPF/runtime/locales/* -t $FLATPAK_DEST/wechat-beta/RadiumWMPF/runtime/locales
       - install -D RadiumWMPF/runtime/WeChatAppEx -t $FLATPAK_DEST/wechat-beta/RadiumWMPF/runtime
-      - install -D RadiumWMPF/runtime/chrome_crashpad_handler -t $FLATPAK_DEST/wechat-beta/RadiumWMPF/runtime
-      - rm -r RadiumWMPF/runtime/locales RadiumWMPF/runtime/WeChatAppEx RadiumWMPF/runtime/chrome_crashpad_handler 
+      - install -D RadiumWMPF/runtime/WeChatAppEx_crashpad_handler -t $FLATPAK_DEST/wechat-beta/RadiumWMPF/runtime
+      - rm -r RadiumWMPF/runtime/locales RadiumWMPF/runtime/WeChatAppEx RadiumWMPF/runtime/WeChatAppEx_crashpad_handler 
       - install -Dm644 RadiumWMPF/runtime/* -t $FLATPAK_DEST/wechat-beta/RadiumWMPF/runtime
     sources:
       - type: file
-        size: 110242404
-        url: https://wget.cx/wechat-beta_1.0.0.145_amd64.deb
-        # url: https://cdn4.cnxclm.com/uploads/2024/03/05/3VDyAc0x_wechat-beta_1.0.0.145_amd64.deb?attname=wechat-beta_1.0.0.145_amd64.deb
-        sha256: fbb1ada447c2595a4ce568eb79852555a724158836c213c7c2ec366164976ebe
+        size: 116882202
+        url: https://pro-store-packages.uniontech.com/appstore/pool/appstore/c/com.tencent.wechat/com.tencent.wechat_1.0.0.236_amd64.deb
+        sha256: 958c2705d3b37470f7272737379d5ed7d3809cf51f9a9ac94f81cbbc9346541a
         dest-filename: wechat-beta.deb
 
   - name: wechat
