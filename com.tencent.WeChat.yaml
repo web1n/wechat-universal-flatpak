@@ -83,7 +83,7 @@ modules:
       - /share/doc
       - /share/man
 
-  # required by wechat-beta
+  # required by wechat
   - name: bzip2
     buildsystem: simple
     build-commands:
@@ -98,23 +98,23 @@ modules:
   - name: wechat-deb
     buildsystem: simple
     build-commands:
-      - bsdtar --to-stdout -xf wechat-beta.deb data.* | bsdtar -xf -
+      - bsdtar --to-stdout -xf wechat.deb data.* | bsdtar -xf -
       - mv opt/apps/com.tencent.wechat/files/* .
-      - install -D wechat -t $FLATPAK_DEST/wechat-beta
-      - install -D crashpad_handler -t $FLATPAK_DEST/wechat-beta
-      - install -Dm644 lib* -t $FLATPAK_DEST/wechat-beta
-      - install -Dm644 RadiumWMPF/host/* -t $FLATPAK_DEST/wechat-beta/RadiumWMPF/host
-      - install -Dm644 RadiumWMPF/runtime/locales/* -t $FLATPAK_DEST/wechat-beta/RadiumWMPF/runtime/locales
-      - install -D RadiumWMPF/runtime/WeChatAppEx -t $FLATPAK_DEST/wechat-beta/RadiumWMPF/runtime
-      - install -D RadiumWMPF/runtime/WeChatAppEx_crashpad_handler -t $FLATPAK_DEST/wechat-beta/RadiumWMPF/runtime
+      - install -D wechat -t $FLATPAK_DEST/wechat
+      - install -D crashpad_handler -t $FLATPAK_DEST/wechat
+      - install -Dm644 lib* -t $FLATPAK_DEST/wechat
+      - install -Dm644 RadiumWMPF/host/* -t $FLATPAK_DEST/wechat/RadiumWMPF/host
+      - install -Dm644 RadiumWMPF/runtime/locales/* -t $FLATPAK_DEST/wechat/RadiumWMPF/runtime/locales
+      - install -D RadiumWMPF/runtime/WeChatAppEx -t $FLATPAK_DEST/wechat/RadiumWMPF/runtime
+      - install -D RadiumWMPF/runtime/WeChatAppEx_crashpad_handler -t $FLATPAK_DEST/wechat/RadiumWMPF/runtime
       - rm -r RadiumWMPF/runtime/locales RadiumWMPF/runtime/WeChatAppEx RadiumWMPF/runtime/WeChatAppEx_crashpad_handler 
-      - install -Dm644 RadiumWMPF/runtime/* -t $FLATPAK_DEST/wechat-beta/RadiumWMPF/runtime
+      - install -Dm644 RadiumWMPF/runtime/* -t $FLATPAK_DEST/wechat/RadiumWMPF/runtime
     sources:
       - type: file
         size: 116882202
         url: https://pro-store-packages.uniontech.com/appstore/pool/appstore/c/com.tencent.wechat/com.tencent.wechat_1.0.0.236_amd64.deb
         sha256: 958c2705d3b37470f7272737379d5ed7d3809cf51f9a9ac94f81cbbc9346541a
-        dest-filename: wechat-beta.deb
+        dest-filename: wechat.deb
 
   - name: wechat
     buildsystem: simple
@@ -142,7 +142,7 @@ modules:
               -b /app/license/etc/lsb-release:/etc/lsb-release \
               -b /app/license/var/lib/uos-license/.license.json:/var/lib/uos-license/.license.json \
               -b /app/license/var/uos/.license.key:/var/uos/.license.key \
-              /app/wechat-beta/wechat "$@"
+              /app/wechat/wechat "$@"
 
       - type: script
         dest-filename: dde-file-manager.sh
