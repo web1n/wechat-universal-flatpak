@@ -135,6 +135,13 @@ modules:
         dest-filename: wechat.sh
         commands:
           - |
+            if [ ! -d "$XDG_DATA_HOME/.xwechat" ] && [ -d "$HOME/.var/app/$FLATPAK_ID/.xwechat" ]; then
+              mv "$HOME/.var/app/$FLATPAK_ID/.xwechat" -t "$XDG_DATA_HOME"
+            fi
+            if [ ! -d "$XDG_DATA_HOME/xwechat_files" ] && [ -d "$HOME/.var/app/$FLATPAK_ID/xwechat_files" ]; then
+              mv "$HOME/.var/app/$FLATPAK_ID/xwechat_files" -t "$XDG_DATA_HOME"
+            fi
+
             HOME="$XDG_DATA_HOME" exec proot \
               -b /app/wechat/libuosdevicea.so:/usr/lib/license/libuosdevicea.so \
               -b /app/license/etc/os-release:/etc/os-release \
