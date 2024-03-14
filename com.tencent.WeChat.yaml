@@ -135,7 +135,8 @@ modules:
         dest-filename: wechat.sh
         commands:
           - |
-            exec proot -b /app/wechat/libuosdevicea.so:/usr/lib/license/libuosdevicea.so \
+            HOME="$XDG_DATA_HOME" exec proot \
+              -b /app/wechat/libuosdevicea.so:/usr/lib/license/libuosdevicea.so \
               -b /app/license/etc/os-release:/etc/os-release \
               -b /app/license/etc/lsb-release:/etc/lsb-release \
               -b /app/license/var/lib/uos-license/.license.json:/var/lib/uos-license/.license.json \
