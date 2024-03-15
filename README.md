@@ -12,7 +12,7 @@ flatpak install com.tencent.WeChat.flatpak
 
 ## 无法正常使用的功能
 
- - Wayland 环境若如果无法使用输入法，请添加环境变量如：QT_IM_MODULE=fcitx
+ - Wayland 环境若如果无法使用输入法，请添加环境变量：QT_IM_MODULE 及 GTK_IM_MODULE。
 
 ## 截图
 
