@@ -1,6 +1,7 @@
 name: Build Flatpak Bundle
 on:
   workflow_dispatch:
+  pull_request:
 
 jobs:
   build-bundle:
@@ -10,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install Flatpak
         run:
           |
@@ -30,8 +31,14 @@ jobs:
       - name: Get current date
         id: date
         run: echo "CURRENT_DATE=$(date -u '+%y%m%d%H%M')" >> $GITHUB_OUTPUT
+      - name: Upload to Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: flatpak-bundle
+          path: com.tencent.WeChat.flatpak
       - name: Upload to Release
-        uses: softprops/action-gh-release@v1
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
         with:
           name: ${{ steps.date.outputs.CURRENT_DATE }}
           tag_name: ${{ steps.date.outputs.CURRENT_DATE }}
