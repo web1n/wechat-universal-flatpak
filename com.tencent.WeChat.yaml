@@ -31,6 +31,8 @@ finish-args:
   - --filesystem=xdg-pictures
   - --persist=.xwechat
   - --persist=xwechat_files
+  # Font config
+  - --filesystem=xdg-config/fontconfig:ro
   # IME
   # - --env=QT_IM_MODULE=
   # Hidpi scale
@@ -94,6 +96,14 @@ modules:
       - type: archive
         url: https://github.com/opencor/bzip2/archive/refs/tags/bzip2-1.0.8.tar.gz
         sha256: db106b740252669664fd8f3a1c69fe7f689d5cd4b132f82ba82b9afba27627df
+
+  - name: emoji-fix
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 noto-color-emoji.conf $FLATPAK_DEST/etc/fonts/local.conf
+    sources:
+      - type: file
+        path: noto-color-emoji.conf
 
   - name: wechat-deb
     buildsystem: simple
