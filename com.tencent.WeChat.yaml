@@ -17,11 +17,6 @@ finish-args:
   - --talk-name=org.freedesktop.Notifications
   - --talk-name=org.kde.StatusNotifierWatcher
   - --own-name=org.kde.*
-  # Required by libuosdevicea
-  - --talk-name=org.freedesktop.DBus
-  - --talk-name=org.freedesktop.DBus.Proprieties
-  - --system-talk-name=org.freedesktop.DBus
-  - --system-talk-name=org.freedesktop.DBus.Proprieties
   # Screenshot
   # - --talk-name=org.gnome.Shell.Screenshot
   # - --talk-name=org.kde.kwin.Screenshot
