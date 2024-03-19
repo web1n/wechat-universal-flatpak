@@ -7,3 +7,6 @@ Icon=com.tencent.WeChat
 StartupWMClass=WeChat
 Categories=Network;
 Comment=微信桌面版
+SingleMainWindow=true
+X-GNOME-SingleWindow=true
+X-SingleMainWindow=true
