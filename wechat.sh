@@ -1,32 +1,53 @@
 #!/bin/bash
 
-open_wechat_window_if_exists() {
+get_wechat_notifier_item() {
   local notifier_items=$(
-    dbus-send --session --print-reply \
-      --dest=org.kde.StatusNotifierWatcher /StatusNotifierWatcher \
-      org.freedesktop.DBus.Properties.GetAll string:org.kde.StatusNotifierWatcher |
-      grep -o 'org.kde.StatusNotifierItem-[[:digit:]]-[[:digit:]]'
+    gdbus call --session \
+      --dest=org.kde.StatusNotifierWatcher --object-path /StatusNotifierWatcher \
+      --method org.freedesktop.DBus.Properties.GetAll org.kde.StatusNotifierWatcher |
+      grep -oE 'org.kde.StatusNotifierItem-[0-9]{1,}-[0-9]'
   )
 
   local notifier_item
   for notifier_item in $notifier_items; do
     local notifier_id=$(
-      dbus-send --session --print-reply \
-        --dest="${notifier_item/\// \/}" /StatusNotifierItem \
-        org.freedesktop.DBus.Properties.Get string:org.kde.StatusNotifierItem string:Id
+      gdbus call --session \
+        --dest="${notifier_item/\// \/}" --object-path /StatusNotifierItem \
+        --method org.freedesktop.DBus.Properties.Get org.kde.StatusNotifierItem Id
     )
 
     if [[ $notifier_id =~ "wechat" ]]; then
-      echo "found wechat"
-
-      dbus-send --session --print-reply \
-        --dest="${notifier_item/\// \/}" /StatusNotifierItem \
-        --type=method_call org.kde.StatusNotifierItem.Activate int32:0 int32:0
+      echo "${notifier_item/\// \/}"
     fi
   done
 }
 
-open_wechat_window_if_exists
+try_open_wechat_window() {
+  local notifier_item=$(get_wechat_notifier_item)
+
+  if [ -n "$notifier_item" ]; then
+    gdbus call --session \
+      --dest="$notifier_item" --object-path /StatusNotifierItem \
+      --method org.kde.StatusNotifierItem.Activate 0 0 >/dev/null
+  fi
+}
+
+try_exit_wechat() {
+  local notifier_item=$(get_wechat_notifier_item)
+
+  if [ -n "$notifier_item" ]; then
+    gdbus call --session \
+      --dest="$notifier_item" --object-path /MenuBar \
+      --method com.canonical.dbusmenu.Event 1 clicked '<"">' 0 >/dev/null
+  fi
+}
+
+if [ "$1" == "--exit-wechat" ]; then
+  try_exit_wechat
+  exit
+fi
+
+try_open_wechat_window
 
 exec proot -b /app/wechat/libuosdevicea.so:/usr/lib/license/libuosdevicea.so \
   -b /app/license/etc/os-release:/etc/os-release \
