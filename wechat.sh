@@ -42,12 +42,23 @@ try_exit_wechat() {
   fi
 }
 
+setup_ime_env() {
+  if [[ "$XMODIFIERS" =~ fcitx ]]; then
+    [ -z "$QT_IM_MODULE" ] && export QT_IM_MODULE=fcitx
+    [ -z "$GTK_IM_MODULE" ] && export GTK_IM_MODULE=fcitx
+  elif [[ "$XMODIFIERS" =~ ibus ]]; then
+    [ -z "$QT_IM_MODULE" ] && export QT_IM_MODULE=ibus
+    [ -z "$GTK_IM_MODULE" ] && export GTK_IM_MODULE=ibus
+  fi
+}
+
 if [ "$1" == "--exit-wechat" ]; then
   try_exit_wechat
   exit
 fi
 
 try_open_wechat_window
+setup_ime_env
 
 exec proot -b /app/wechat/libuosdevicea.so:/usr/lib/license/libuosdevicea.so \
   -b /app/license/etc/os-release:/etc/os-release \
