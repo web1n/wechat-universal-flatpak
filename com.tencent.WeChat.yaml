@@ -36,15 +36,15 @@ finish-args:
   - --unset-env=QT_QPA_PLATFORM
 
 cleanup:
-  - "/include"
-  - "/lib/pkgconfig"
-  - "/man"
-  - "/share/doc"
-  - "/share/gtk-doc"
-  - "/share/man"
-  - "/share/pkgconfig"
-  - "*.la"
-  - "*.a"
+  - /include
+  - /lib/pkgconfig
+  - /man
+  - /share/doc
+  - /share/gtk-doc
+  - /share/man
+  - /share/pkgconfig
+  - '*.la'
+  - '*.a'
 
 modules:
   # required by proot
@@ -54,6 +54,10 @@ modules:
       - type: archive
         url: https://www.samba.org/ftp/talloc/talloc-2.4.1.tar.gz
         sha256: 410a547f08557007be0e88194f218868358edc0ab98c98ba8c167930db3d33f9
+        x-checker-data:
+          type: anitya
+          project-id: 1733
+          url-template: https://www.samba.org/ftp/talloc/talloc-$version.tar.gz
 
   - name: proot
     buildsystem: simple
@@ -61,9 +65,13 @@ modules:
       - make -C src proot
       - install -Dm755 src/proot -t /app/bin
     sources:
-      - type: git
-        url: https://github.com/proot-me/proot.git
-        commit: bd5a5f63d72f8210d8cee76195eb9f0749e5bd70
+      - type: archive
+        url: https://github.com/proot-me/proot/archive/refs/tags/v5.4.0.tar.gz
+        sha256: 29248aac2a7ce10c3bd5ee5602742ec33b2532310ff9cf73b79f3c133e5a5f68
+        x-checker-data:
+          type: anitya
+          project-id: 231637
+          url-template: https://github.com/proot-me/proot/archive/refs/tags/v$version.tar.gz
 
   # required by libuosdevicea
   - name: openssl
@@ -76,6 +84,10 @@ modules:
       - type: archive
         url: https://www.openssl.org/source/openssl-1.1.1w.tar.gz
         sha256: cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8
+        x-checker-data:
+          type: anitya
+          project-id: 20333
+          url-template: https://www.openssl.org/source/openssl-$version.tar.gz
     cleanup:
       - /share/doc
       - /share/man
@@ -91,6 +103,10 @@ modules:
       - type: archive
         url: https://github.com/opencor/bzip2/archive/refs/tags/bzip2-1.0.8.tar.gz
         sha256: db106b740252669664fd8f3a1c69fe7f689d5cd4b132f82ba82b9afba27627df
+        x-checker-data:
+          type: anitya
+          project-id: 237
+          url-template: https://github.com/opencor/bzip2/archive/refs/tags/bzip2-$version.tar.gz
 
   - name: emoji-fix
     buildsystem: simple
@@ -112,14 +128,20 @@ modules:
       - install -Dm644 RadiumWMPF/runtime/locales/* -t $FLATPAK_DEST/wechat/RadiumWMPF/runtime/locales
       - install -D RadiumWMPF/runtime/WeChatAppEx -t $FLATPAK_DEST/wechat/RadiumWMPF/runtime
       - install -D RadiumWMPF/runtime/WeChatAppEx_crashpad_handler -t $FLATPAK_DEST/wechat/RadiumWMPF/runtime
-      - rm -r RadiumWMPF/runtime/locales RadiumWMPF/runtime/WeChatAppEx RadiumWMPF/runtime/WeChatAppEx_crashpad_handler 
+      - rm -r RadiumWMPF/runtime/locales RadiumWMPF/runtime/WeChatAppEx RadiumWMPF/runtime/WeChatAppEx_crashpad_handler
       - install -Dm644 RadiumWMPF/runtime/* -t $FLATPAK_DEST/wechat/RadiumWMPF/runtime
     sources:
       - type: file
-        size: 116879854
         url: https://pro-store-packages.uniontech.com/appstore/pool/appstore/c/com.tencent.wechat/com.tencent.wechat_1.0.0.238_amd64.deb
         sha256: 371026679dba25a033023b4077dc527059d906ec03ea2db05f6fc012ab40c96b
         dest-filename: wechat.deb
+        x-checker-data:
+          type: debian-repo
+          package-name: com.tencent.wechat
+          root: https://pro-store-packages.uniontech.com/appstore
+          dist: eagle-pro
+          component: appstore
+          is-main-source: true
 
   - name: wechat
     buildsystem: simple
@@ -135,7 +157,7 @@ modules:
       - install -Dm644 license/etc/lsb-release -t $FLATPAK_DEST/license/etc
       - install -Dm644 license/var/lib/uos-license/.license.json -t $FLATPAK_DEST/license/var/lib/uos-license
       - install -Dm644 license/var/uos/.license.key -t $FLATPAK_DEST/license/var/uos
- 
+
     sources:
       - type: script
         dest-filename: dde-file-manager.sh
