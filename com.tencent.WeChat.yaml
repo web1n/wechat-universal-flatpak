@@ -108,13 +108,20 @@ modules:
           project-id: 237
           url-template: https://github.com/opencor/bzip2/archive/refs/tags/bzip2-$version.tar.gz
 
-  - name: emoji-fix
+  - name: fontconfig
     buildsystem: simple
     build-commands:
-      - install -Dm644 noto-color-emoji.conf $FLATPAK_DEST/etc/fonts/local.conf
+      - install -Dm644 local.conf -t $FLATPAK_DEST/etc/fonts/
+      - install -Dm644 70-noto-cjk.conf -t $FLATPAK_DEST/etc/fonts/conf.d/
+      - install -Dm644 75-noto-color-emoji.conf -t $FLATPAK_DEST/etc/fonts/conf.d/
     sources:
       - type: file
-        path: noto-color-emoji.conf
+        path: fontconfig/local.conf
+      - type: file
+        path: fontconfig/75-noto-color-emoji.conf
+      - type: file
+        url: https://gitlab.archlinux.org/archlinux/packaging/packages/noto-fonts-cjk/-/raw/5fd3534bf7a6e26c7506dc8f40dcd89f37d35627/70-noto-cjk.conf
+        sha256: 2417ac0e6720fe8da55ee59f16e36cfe96737bc21432460a322bb0f395e3a521
 
   - name: wechat-deb
     buildsystem: simple
