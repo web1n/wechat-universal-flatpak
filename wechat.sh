@@ -60,9 +60,4 @@ fi
 try_open_wechat_window
 setup_ime_env
 
-exec proot -b /app/wechat/libuosdevicea.so:/usr/lib/license/libuosdevicea.so \
-  -b /app/license/etc/os-release:/etc/os-release \
-  -b /app/license/etc/lsb-release:/etc/lsb-release \
-  -b /app/license/var/lib/uos-license/.license.json:/var/lib/uos-license/.license.json \
-  -b /app/license/var/uos/.license.key:/var/uos/.license.key \
-  /app/wechat/wechat "$@"
+LD_PRELOAD=/app/lib/libredirect.so /app/wechat/wechat "$@"
