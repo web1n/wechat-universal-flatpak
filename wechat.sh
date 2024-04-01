@@ -3,8 +3,8 @@
 get_wechat_notifier_item() {
   local notifier_items=$(
     gdbus call --session \
-      --dest=org.kde.StatusNotifierWatcher --object-path /StatusNotifierWatcher \
-      --method org.freedesktop.DBus.Properties.GetAll org.kde.StatusNotifierWatcher |
+      --dest org.freedesktop.DBus --object-path /org/freedesktop/DBus \
+      --method org.freedesktop.DBus.ListNames |
       grep -oE 'org.kde.StatusNotifierItem-[0-9]{1,}-[0-9]'
   )
 
