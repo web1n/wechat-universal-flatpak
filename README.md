@@ -10,10 +10,10 @@
 flatpak install com.tencent.WeChat.flatpak
 ```
 
-## 无法正常使用的功能
-
- - Wayland 环境若如果无法使用输入法，请添加环境变量：QT_IM_MODULE 及 GTK_IM_MODULE。
-
 ## 截图
 
 ![aa](.assets/sc.png)
+
+## 其他
+
+ - 本仓库仅负责将未修改的微信二进制文件打包为 Flatpak，因此任何微信上游的问题请勿向本仓库反馈。上游问题请点击`微信-关于微信-意见反馈`向微信官方进行反馈，非上游问题请提 Issue。
