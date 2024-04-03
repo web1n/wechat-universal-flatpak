@@ -49,7 +49,7 @@ modules:
     buildsystem: simple
     build-commands:
       - gcc -shared -fPIC redirect.c -o libredirect.so -ldl
-      - install -Dm755 libredirect.so -t $FLATPAK_DEST/lib/
+      - install -Dm644 libredirect.so -t $FLATPAK_DEST/lib/
     sources:
       - type: file
         path: redirect.c
