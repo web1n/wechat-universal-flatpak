@@ -11,6 +11,8 @@ finish-args:
   - --socket=x11
   - --socket=pulseaudio
   - --device=all
+  # File Manager
+  - --talk-name=org.freedesktop.FileManager1
   # System tray icon
   - --talk-name=org.freedesktop.Notifications
   - --talk-name=org.kde.StatusNotifierWatcher
@@ -115,19 +117,8 @@ modules:
       - install -D wechat.sh $FLATPAK_DEST/bin/wechat
       - install -D dde-file-manager.sh $FLATPAK_DEST/bin/dde-file-manager
     sources:
-      - type: script
-        dest-filename: dde-file-manager.sh
-        commands:
-          - |
-            if [ "$1" == "--show-item" ]; then
-              real_path=$(realpath -m "$2" | xargs -0 dirname | sed "s:^$HOME/xwechat_files/:$HOME/.var/app/$FLATPAK_ID/xwechat_files/:")
-              echo "real path is $real_path"
-              if [ -d "$real_path" ]; then
-                exec xdg-open "$real_path"
-              else
-                zenity --error --text="Path $real_path not found" --icon-name=com.tencent.WeChat
-              fi
-            fi
+      - type: file
+        path: dde-file-manager.sh
 
       - type: file
         path: wechat.sh
