@@ -6,7 +6,6 @@
 #include <sys/types.h>
 
 
-int *(*real_access)(const char *, int);
 void *(*real_dlopen)(const char *, int);
 FILE *(*real_fopen)(const char *, const char *);
 FILE *(*real_fopen64)(const char *, const char *);
@@ -14,34 +13,18 @@ FILE *(*real_fopen64)(const char *, const char *);
 void hook_path(const char *func, const char **path) {
     char *redirect = NULL;
 
-    if (strcmp(*path, "/usr/lib/license/libuosdevicea.so") == 0) {
-        redirect = "/app/wechat/libuosdevicea.so";
-    } else if (strcmp(*path, "/etc/os-release") == 0) {
-        redirect = "/app/license/etc/os-release";
+    if (strcmp(*path, "/usr/lib/libactivation.so") == 0) {
+        redirect = "/app/lib/libactivation.so";
     } else if (strcmp(*path, "/etc/lsb-release") == 0) {
-        redirect = "/app/license/etc/lsb-release";
-    } else if (strcmp(*path, "/var/lib/uos-license/.license.json") == 0) {
-        redirect = "/app/license/var/lib/uos-license/.license.json";
-    } else if (strcmp(*path, "/var/uos/.license.key") == 0) {
-        redirect = "/app/license/var/uos/.license.key";
+        redirect = "/app/etc/lsb-release-ukui";
+    } else if (strcmp(*path, "/etc/.kyact") == 0) {
+        redirect = "/app/etc/.kyact";
     }
 
     if (redirect != NULL) {
         printf("%s: redirect from %s to: %s\n", func, *path, redirect);
         *path = redirect;
     }
-}
-
-int *access(const char *__file, int __mode) {
-    if (real_access == NULL) {
-        real_access = dlsym(RTLD_NEXT, "access");
-    }
-
-    if (__file != NULL) {
-        hook_path("access", &__file);
-    }
-
-    return (*real_access)(__file, __mode);
 }
 
 void *dlopen(const char *__file, int __mode) {
