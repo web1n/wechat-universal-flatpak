@@ -7,9 +7,9 @@
 
 
 int *(*real_access)(const char *, int);
-void *(*real_dlopen)(char const *, int);
-FILE *(*real_fopen)(char const *, char const *);
-FILE *(*real_fopen64)(char const *, char const *);
+void *(*real_dlopen)(const char *, int);
+FILE *(*real_fopen)(const char *, const char *);
+FILE *(*real_fopen64)(const char *, const char *);
 
 void hook_path(const char *func, const char **path) {
     char *redirect = NULL;
