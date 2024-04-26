@@ -7,7 +7,6 @@
 
 
 void *(*real_dlopen)(const char *, int);
-FILE *(*real_fopen)(const char *, const char *);
 FILE *(*real_fopen64)(const char *, const char *);
 
 void hook_path(const char *func, const char **path) {
@@ -17,8 +16,6 @@ void hook_path(const char *func, const char **path) {
         redirect = "/app/lib/libactivation.so";
     } else if (strcmp(*path, "/etc/lsb-release") == 0) {
         redirect = "/app/etc/lsb-release-ukui";
-    } else if (strcmp(*path, "/etc/.kyact") == 0) {
-        redirect = "/app/etc/.kyact";
     }
 
     if (redirect != NULL) {
@@ -37,18 +34,6 @@ void *dlopen(const char *__file, int __mode) {
     }
 
     return (*real_dlopen)(__file, __mode);
-}
-
-FILE *fopen(const char *__file, const char *__mode) {
-    if (real_fopen == NULL) {
-        real_fopen = dlsym(RTLD_NEXT, "fopen");
-    }
-
-    if (__file != NULL) {
-        hook_path("fopen", &__file);
-    }
-
-    return (*real_fopen)(__file, __mode);
 }
 
 FILE *fopen64(const char *__file, const char *__mode) {
