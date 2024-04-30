@@ -1,12 +1,15 @@
 [Desktop Entry]
 Name=WeChat
+Name[zh_CN]=微信
 Exec=wechat %U
 Terminal=false
 Type=Application
 Icon=com.tencent.WeChat
-StartupWMClass=WeChat
+StartupWMClass=wechat
 Categories=Network;
-Comment=微信桌面版
+Comment=WeChat Universal
+Comment[zh_CN]=微信桌面版
+Keywords=wechat,weixin
 SingleMainWindow=true
 X-GNOME-SingleWindow=true
 X-SingleMainWindow=true
