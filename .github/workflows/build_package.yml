@@ -8,44 +8,67 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-
+    strategy:
+      matrix:
+        arch: [x86_64, aarch64]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Set up QEMU
+        if: ${{ matrix.arch != 'x86_64' }}
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: ${{ matrix.arch }}
       - name: Install Flatpak
         run:
           |
-          sudo apt update
-          sudo apt upgrade -y
-          sudo apt install -y flatpak flatpak-builder
+          sudo apt -qq update
+          sudo apt -qq install -y flatpak flatpak-builder
           sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-          sudo flatpak install -y org.freedesktop.Platform//23.08
-          sudo flatpak install -y org.freedesktop.Sdk//23.08
+          sudo flatpak install --noninteractive --arch=${{ matrix.arch }} org.freedesktop.Platform//23.08 org.freedesktop.Sdk//23.08
           git config --global protocol.file.allow always # https://github.com/flatpak/flatpak-builder/issues/495
       - name: Build
         run:
           |
-          flatpak-builder build com.tencent.WeChat.yaml --delete-build-dirs --force-clean 
-          flatpak-builder --repo=repo build com.tencent.WeChat.yaml --force-clean
-          flatpak build-bundle ./repo com.tencent.WeChat.flatpak com.tencent.WeChat
-      - name: Get current date
-        id: date
-        run: echo "CURRENT_DATE=$(date -u '+%y%m%d%H%M')" >> $GITHUB_OUTPUT
+          flatpak-builder --arch=${{ matrix.arch }} --repo=repo build com.tencent.WeChat.yaml --delete-build-dirs --force-clean
+          flatpak build-bundle --arch=${{ matrix.arch }} ./repo com.tencent.WeChat.flatpak com.tencent.WeChat
+          mv com.tencent.WeChat.flatpak com.tencent.WeChat-${{ matrix.arch }}.flatpak
       - name: Upload to Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: flatpak-bundle
-          path: com.tencent.WeChat.flatpak
+          name: flatpak-bundle-${{ matrix.arch }}
+          path: com.tencent.WeChat-${{ matrix.arch }}.flatpak
+  
+  upload-release:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: build-bundle
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install xmlstarlet
+        run: sudo apt -qq update && sudo apt -qq install -y xmlstarlet
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+      - name: Get current date & version
+        id: env
+        run:
+          |
+          echo "CURRENT_DATE=$(date -u '+%y%m%d%H%M')" >> $GITHUB_OUTPUT
+          echo "VERSION=$(xmlstarlet sel -t -v //component/releases/release[1]/@version com.tencent.WeChat.metainfo.xml)" >> $GITHUB_OUTPUT
       - name: Upload to Release
-        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ steps.date.outputs.CURRENT_DATE }}
-          tag_name: ${{ steps.date.outputs.CURRENT_DATE }}
-          files: com.tencent.WeChat.flatpak
+          name: ${{ steps.env.outputs.VERSION }}
+          tag_name: ${{ steps.env.outputs.VERSION }}-${{ steps.env.outputs.CURRENT_DATE }}
+          files: com.tencent.WeChat-*.flatpak
           body:
             |
             install via:
             ```
-            flatpak install com.tencent.WeChat.flatpak
+            flatpak install com.tencent.WeChat-<arch>.flatpak
             ```

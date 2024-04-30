@@ -118,6 +118,19 @@ modules:
         url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/all/wechat-beta_1.0.0.241_amd64.deb
         sha256: 4ffe0cda779b46ad5d76b85bdc65136c9c89add4d0bc1175a34d8b94f516c4fb
         dest-filename: wechat.deb
+        only-arches: [x86_64]
+        x-checker-data:
+          type: debian-repo
+          package-name: wechat-beta
+          root: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1
+          dist: default
+          component: all
+          is-main-source: true
+      - type: file
+        url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/all/wechat-beta_1.0.0.241_arm64.deb
+        sha256: 344365a011e746fc682d7112d435a70484044e395c04a57b74aa27676af7026f
+        dest-filename: wechat.deb
+        only-arches: [aarch64]
         x-checker-data:
           type: debian-repo
           package-name: wechat-beta
