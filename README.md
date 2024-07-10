@@ -7,7 +7,7 @@
 从 Release 下载安装包，使用以下命令安装即可。
 
 ```shell
-flatpak install com.tencent.WeChat.flatpak
+flatpak install com.tencent.WeChat-<arch>.flatpak
 ```
 
 ## 截图
