@@ -115,8 +115,8 @@ modules:
       - mv opt/wechat-beta -T $FLATPAK_DEST/wechat
     sources:
       - type: file
-        url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/all/wechat-beta_1.0.0.241_amd64.deb
-        sha256: 4ffe0cda779b46ad5d76b85bdc65136c9c89add4d0bc1175a34d8b94f516c4fb
+        url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/main/deb/wechat/wechat-beta_4.0.0.21_amd64.deb
+        sha256: b74b57c906a3db3323d2b901e48fa978d35256381d22a868acdf087d8fbdba43
         dest-filename: wechat.deb
         only-arches: [x86_64]
         x-checker-data:
@@ -127,8 +127,8 @@ modules:
           component: all
           is-main-source: true
       - type: file
-        url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/all/wechat-beta_1.0.0.241_arm64.deb
-        sha256: 344365a011e746fc682d7112d435a70484044e395c04a57b74aa27676af7026f
+        url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/main/deb/wechat/wechat-beta_4.0.0.21_arm64.deb
+        sha256: 3e8e0af409586cd738dd97fd40e0733d91d3525cfa7bab383bf9b6da46a70a14
         dest-filename: wechat.deb
         only-arches: [aarch64]
         x-checker-data:
