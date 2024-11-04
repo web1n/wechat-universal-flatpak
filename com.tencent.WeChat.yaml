@@ -47,36 +47,6 @@ cleanup:
   - '*.a'
 
 modules:
-  - name: libactivation
-    buildsystem: simple
-    build-commands:
-      - bsdtar --to-stdout -xf wechat.deb data.* | bsdtar -xf -
-      - gcc -shared -fPIC activation.c -o libactivation.so -ldl
-      - install -Dm644 libactivation.so -t $FLATPAK_DEST/lib/
-      - install -Dm644 etc/.kyact etc/lsb-release-ukui -t $FLATPAK_DEST/etc/
-    sources:
-      - type: file
-        path: activation.c
-      - type: file
-        url: https://archive2.kylinos.cn/deb/kylin/production/PART-openKylin/custom/partner/openKylin/pool/all/wechat-beta_1.0.0.238_amd64.deb
-        sha256: 912cfd30641ef376a680b05c6bdcb70cb3f154cb9eb6d0d3a57d23befe23b99c
-        dest-filename: wechat.deb
-        x-checker-data:
-          type: debian-repo
-          package-name: wechat-beta
-          root: https://archive2.kylinos.cn/deb/kylin/production/PART-openKylin/custom/partner/openKylin
-          dist: default
-          component: all
-
-  - name: libredirect
-    buildsystem: simple
-    build-commands:
-      - gcc -shared -fPIC redirect.c -o libredirect.so -ldl
-      - install -Dm644 libredirect.so -t $FLATPAK_DEST/lib/
-    sources:
-      - type: file
-        path: redirect.c
-
   # required by wechat
   - name: bzip2
     buildsystem: simple

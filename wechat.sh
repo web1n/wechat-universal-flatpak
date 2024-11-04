@@ -60,5 +60,4 @@ fi
 try_open_wechat_window
 setup_ime_env
 
-export LD_PRELOAD=/app/lib/libredirect.so
 exec /app/wechat/wechat "$@"
