@@ -30,9 +30,8 @@ jobs:
       - name: Build
         run:
           |
-          flatpak-builder --arch=${{ matrix.arch }} --repo=repo build com.tencent.WeChat.yaml --delete-build-dirs --force-clean
-          flatpak build-bundle --arch=${{ matrix.arch }} ./repo com.tencent.WeChat.flatpak com.tencent.WeChat
-          mv com.tencent.WeChat.flatpak com.tencent.WeChat-${{ matrix.arch }}.flatpak
+          flatpak-builder --arch=${{ matrix.arch }} --install --user build com.tencent.WeChat.yaml
+          flatpak build-bundle --arch=${{ matrix.arch }} ~/.local/share/flatpak/repo/ com.tencent.WeChat-${{ matrix.arch }}.flatpak com.tencent.WeChat
       - name: Upload to Artifact
         uses: actions/upload-artifact@v4
         with:
