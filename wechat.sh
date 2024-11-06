@@ -60,4 +60,4 @@ fi
 try_open_wechat_window
 setup_ime_env
 
-exec /app/wechat/wechat "$@"
+exec /app/extra/wechat/wechat "$@"
