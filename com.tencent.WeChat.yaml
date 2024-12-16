@@ -93,32 +93,32 @@ modules:
         commands:
           - export LC_ALL=C
           - bsdtar --to-stdout -xf wechat.deb data.* | bsdtar -xf -
-          - mv opt/wechat-beta -T wechat
+          - mv opt/wechat -T wechat
           - rm -r wechat.deb opt usr
 
       - type: extra-data
-        url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/main/deb/wechat/wechat-beta_4.0.0.21_amd64.deb
-        sha256: b74b57c906a3db3323d2b901e48fa978d35256381d22a868acdf087d8fbdba43
+        url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/main/deb/wechat/extra/1/wechat_4.0.1.7_amd64.deb
+        sha256: 3ca579b7cb2df40135c266d13c96514cc464249c3bb198966b70dccac2bff53d
         filename: wechat.deb
-        size: 228683804
+        size: 235065668
         only-arches: [x86_64]
         x-checker-data:
           type: debian-repo
-          package-name: wechat-beta
+          package-name: wechat
           root: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1
           dist: default
           component: all
           is-main-source: true
 
       - type: extra-data
-        url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/main/deb/wechat/wechat-beta_4.0.0.21_arm64.deb
-        sha256: 3e8e0af409586cd738dd97fd40e0733d91d3525cfa7bab383bf9b6da46a70a14
+        url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/main/deb/wechat/extra/1/wechat_4.0.1.7_arm64.deb
+        sha256: 3ff6057d2978bbb5a7e94e3563449b2ecb6323025dd172daefce2ce75985690d
         filename: wechat.deb
-        size: 207396196
+        size: 212722600
         only-arches: [aarch64]
         x-checker-data:
           type: debian-repo
-          package-name: wechat-beta
+          package-name: wechat
           root: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1
           dist: default
           component: all
