@@ -76,6 +76,15 @@ modules:
         url: https://gitlab.archlinux.org/archlinux/packaging/packages/noto-fonts-cjk/-/raw/5fd3534bf7a6e26c7506dc8f40dcd89f37d35627/70-noto-cjk.conf
         sha256: 2417ac0e6720fe8da55ee59f16e36cfe96737bc21432460a322bb0f395e3a521
 
+  # Remove execstack from shared libraries
+  - name: patchelf
+    sources:
+      - type: archive
+        url: https://github.com/NixOS/patchelf/releases/download/0.18.0/patchelf-0.18.0.tar.gz
+        sha256: 64de10e4c6b8b8379db7e87f58030f336ea747c0515f381132e810dbf84a86e7
+    cleanup:
+      - /share
+
   - name: wechat
     buildsystem: simple
     build-commands:
@@ -93,7 +102,7 @@ modules:
           - bsdtar --to-stdout -xf wechat.deb data.* | bsdtar -xf -
           - mv opt/wechat -T wechat
           - rm -r wechat.deb opt usr
-
+          - patchelf --clear-execstack wechat/libandromeda.so wechat/libowl.so wechat/libvoipCodec.so
       - type: extra-data
         url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/main/deb/wechat/wechat_4.1.0.12_amd64.deb
         sha256: 3deddf53704102a6a844b0dee43e1558f0db0164bcf319fcbcf83b1db5c40cc4
