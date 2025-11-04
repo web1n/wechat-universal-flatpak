@@ -106,10 +106,10 @@ modules:
           - rm -r wechat.deb opt usr
 
       - type: extra-data
-        url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/main/deb/wechat/wechat_4.0.1.12_amd64.deb
-        sha256: ed7d4d0b7eb99a465c20babd0d6c928e1440212336f0e43e18128c5771b2252f
+        url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/main/deb/wechat/wechat_4.1.0.12_amd64.deb
+        sha256: 3deddf53704102a6a844b0dee43e1558f0db0164bcf319fcbcf83b1db5c40cc4
         filename: wechat.deb
-        size: 235008548
+        size: 239627688
         only-arches: [x86_64]
         x-checker-data:
           type: debian-repo
@@ -120,10 +120,10 @@ modules:
           is-main-source: true
 
       - type: extra-data
-        url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/main/deb/wechat/wechat_4.0.1.12_arm64.deb
-        sha256: f6184c90a34164df31d34e8f7079d7cdf1d3dd79844629d121756bc21f127c56
+        url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/main/deb/wechat/wechat_4.1.0.12_arm64.deb
+        sha256: b3eecfec187498936aebcadd51442b2f82d26d639b314508c889aded9f17859d
         filename: wechat.deb
-        size: 212934910
+        size: 217746958
         only-arches: [aarch64]
         x-checker-data:
           type: debian-repo
