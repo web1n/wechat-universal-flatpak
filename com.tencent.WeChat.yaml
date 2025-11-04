@@ -63,7 +63,21 @@ modules:
           project-id: 237
           url-template: https://github.com/opencor/bzip2/archive/refs/tags/bzip2-$version.tar.gz
 
-    # required by wechat arm64 https://github.com/web1n/wechat-universal-flatpak/issues/70
+  # required by wechat
+  - name: krb5
+    buildsystem: autotools
+    subdir: src
+    sources:
+      - type: archive
+        url: https://kerberos.org/dist/krb5/1.22/krb5-1.22.1.tar.gz
+        sha256: 1a8832b8cad923ebbf1394f67e2efcf41e3a49f460285a66e35adec8fa0053af
+        x-checker-data:
+          type: anitya
+          project-id: 13287
+          stable-only: true
+          url-template: https://kerberos.org/dist/krb5/${version0}.${version1}/krb5-${version0}.${version1}.${version2}.tar.gz
+
+  # required by wechat arm64 https://github.com/web1n/wechat-universal-flatpak/issues/70
   - name: libtiff5
     buildsystem: cmake
     only-arches: [aarch64]
