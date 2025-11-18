@@ -85,6 +85,15 @@ modules:
     cleanup:
       - /share
 
+  - name: libredirect
+    buildsystem: simple
+    build-commands:
+      - gcc -shared -fPIC redirect.c -o libredirect.so -ldl
+      - install -Dm644 libredirect.so -t $FLATPAK_DEST/lib/
+    sources:
+      - type: file
+        path: redirect.c
+
   - name: wechat
     buildsystem: simple
     build-commands:
