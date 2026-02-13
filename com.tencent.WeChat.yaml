@@ -16,7 +16,6 @@ finish-args:
   # System tray icon
   - --talk-name=org.freedesktop.Notifications
   - --talk-name=org.kde.StatusNotifierWatcher
-  - --own-name=org.kde.*
   # Screenshot
   # - --talk-name=org.gnome.Shell.Screenshot
   # - --talk-name=org.kde.kwin.Screenshot
@@ -84,6 +83,15 @@ modules:
         sha256: 64de10e4c6b8b8379db7e87f58030f336ea747c0515f381132e810dbf84a86e7
     cleanup:
       - /share
+
+  - name: libappid-notifier
+    buildsystem: simple
+    build-commands:
+      - make && make install PREFIX=$FLATPAK_DEST
+    sources:
+      - type: git
+        url: https://github.com/web1n/libappid-notifier
+        branch: main
 
   - name: wechat
     buildsystem: simple

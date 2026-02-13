@@ -5,7 +5,7 @@ get_wechat_notifier_item() {
     gdbus call --session \
       --dest org.freedesktop.DBus --object-path /org/freedesktop/DBus \
       --method org.freedesktop.DBus.ListNames |
-      grep -oE 'org.kde.StatusNotifierItem-[0-9]{1,}-[0-9]'
+      grep -oE 'com.tencent.WeChat.StatusNotifierItem-[0-9]{1,}-[0-9]'
   )
 
   local notifier_item
@@ -60,4 +60,5 @@ fi
 try_open_wechat_window
 setup_ime_env
 
+export LD_PRELOAD=/app/lib/libappid_notifier.so
 exec /app/extra/wechat/wechat "$@"
