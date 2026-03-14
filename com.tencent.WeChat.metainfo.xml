@@ -18,8 +18,11 @@
     <category>Network</category>
   </categories>
   <releases>
-    <release version="4.1.0.16" date="2026-02-12">
+    <release version="4.1.1.4" date="2026-03-12">
       <description></description>
+    </release>
+    <release version="4.1.0.16" date="2026-02-12">
+      <description/>
     </release>
     <release version="4.1.0.12" date="2025-10-28">
       <description/>

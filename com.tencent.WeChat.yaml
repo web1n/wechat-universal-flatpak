@@ -112,10 +112,10 @@ modules:
           - rm -r wechat.deb opt usr
           - patchelf --clear-execstack wechat/libandromeda.so wechat/libowl.so wechat/libvoipCodec.so
       - type: extra-data
-        url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/main/deb/wechat/wechat_4.1.0.16_amd64.deb
-        sha256: 5dabc944dc085bfe68e1d35bd779d52339c6397851df5aa8c9639335816585a3
+        url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/main/deb/wechat/wechat_4.1.1.4_amd64.deb
+        sha256: b7f5e241a867c1871d886218aa8121444320ad6e2a98190bc445aa5c2ee225e9
         filename: wechat.deb
-        size: 239620098
+        size: 243303884
         only-arches: [x86_64]
         x-checker-data:
           type: debian-repo
@@ -126,10 +126,10 @@ modules:
           is-main-source: true
 
       - type: extra-data
-        url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/main/deb/wechat/wechat_4.1.0.16_arm64.deb
-        sha256: c6d835ebc2cf998c8c65d018e4a59393e5f3ffd412edd8be1bd1ca0b8e4c8a77
+        url: https://archive2.kylinos.cn/deb/kylin/production/PART-V10-SP1/custom/partner/V10-SP1/pool/main/deb/wechat/wechat_4.1.1.4_arm64.deb
+        sha256: aab985c352dceca23aa1af64aa76d18ad15eb0d7039f1eb83591d06f36e6b194
         filename: wechat.deb
-        size: 217761056
+        size: 219584592
         only-arches: [aarch64]
         x-checker-data:
           type: debian-repo
